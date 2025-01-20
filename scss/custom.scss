@@ -1,0 +1,153 @@
+
+@use "sass:map";
+@use "sass:string";
+@use "sass:list";
+@use "sass:meta";
+
+@import "../node_modules/bootstrap/scss/mixins/banner";
+@include bsBanner("");
+@import "../node_modules/bootstrap/scss/functions";
+
+// Primary and secondary colors
+$primary: darkorange;
+$secondary: navy;
+
+// Base font size for the document
+$font-size-base: 1.2rem;
+
+// Color for the body text
+$body-color: #0A0A0A;
+
+// Border radius for elements
+$border-radius: 0.5rem;
+
+// Width of the accordion icon
+$accordion-icon-width: 2rem;
+
+// Font size for the navbar brand
+$navbar-brand-font-size: 2rem;
+
+// Width of the border
+$border-width: 2px;
+
+// Transform for the floating label in forms
+$form-floating-label-transform: scale(0.65) translateY(-.5rem) translateX(.15rem);
+
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+
+// Custom accent color
+$accent: #800080;
+
+$custom-color: (
+  "accent": $accent
+  );
+$theme-colors: map.merge($theme-colors, $custom-color);  
+
+// Custom spacer to spacers map
+$custom-spacer: (
+    6: $spacer * 4
+);
+
+$spacers: map.merge($spacers, $custom-spacer);
+
+// Custom border width
+$custom-border-width: (
+    6: 6px
+);
+$border-widths: map.merge($border-widths, $custom-border-width);
+
+// Custom display font size
+$custom-display-font-size: (
+    7: 2rem
+);
+$display-font-sizes: map.merge($display-font-sizes, $custom-display-font-size);
+
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/tables";
+@import "../node_modules/bootstrap/scss/forms";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/transitions";
+@import "../node_modules/bootstrap/scss/dropdown";
+@import "../node_modules/bootstrap/scss/button-group";
+@import "../node_modules/bootstrap/scss/nav";
+@import "../node_modules/bootstrap/scss/navbar";
+@import "../node_modules/bootstrap/scss/card";
+@import "../node_modules/bootstrap/scss/accordion";
+@import "../node_modules/bootstrap/scss/breadcrumb";
+@import "../node_modules/bootstrap/scss/pagination";
+@import "../node_modules/bootstrap/scss/badge";
+@import "../node_modules/bootstrap/scss/alert";
+@import "../node_modules/bootstrap/scss/progress";
+@import "../node_modules/bootstrap/scss/list-group";
+@import "../node_modules/bootstrap/scss/close";
+@import "../node_modules/bootstrap/scss/toasts";
+@import "../node_modules/bootstrap/scss/modal";
+@import "../node_modules/bootstrap/scss/tooltip";
+@import "../node_modules/bootstrap/scss/popover";
+@import "../node_modules/bootstrap/scss/spinners";
+@import "../node_modules/bootstrap/scss/offcanvas";
+@import "../node_modules/bootstrap/scss/placeholders";
+@import "../node_modules/bootstrap/scss/helpers";
+@import "../node_modules/bootstrap/scss/utilities/api";
+
+@function is-hex-color($color) {
+    $color-string: meta.inspect($color);
+    
+    $length: string.length($color-string);
+  
+    @if not ($length == 4 or $length == 7 or $length == 9) {
+      @return false;
+    }
+  
+    @if string.slice($color-string, 1, 1) != "#" {
+      @return false;
+    }
+  
+    $valid-characters: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' 
+                        'a' 'b' 'c' 'd' 'e' 'f'
+                        'A' 'B' 'C' 'D' 'E' 'F';
+  
+    @for $i from 2 through $length {
+      $char: string.slice($color-string, $i, $i);
+      @if not list.index($valid-characters, $char) {
+        @return false;
+      }
+    }
+ 
+    @return true;
+}
+   
+@mixin background-and-text-colors ($background-color) {
+  @if is-hex-color($background-color) {
+      background-color: $background-color;
+      color: color-contrast($background-color);
+    } @else {
+      background-color: white;
+      color: black;
+    }
+}
+
+%title-base {
+   font-size: $font-size-base * 2;
+   font-weight: bold;
+   text-transform: uppercase;
+   padding: 1rem;
+   display:flex;
+   justify-content: center;
+ }
+
+ @each $key, $color in $theme-colors {
+   .title-#{$key} {
+       @extend %title-base;
+       @include background-and-text-colors($color);
+   }
+ }
